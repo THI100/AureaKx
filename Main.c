@@ -4,20 +4,9 @@
 
 //structs:
 
-typedef struct uint128_t {
-    uint64_t low;
-    uint64_t high;
-} uint128_t;
-
 struct hash1024 {
-    uint128_t first;
-    uint128_t second;
-    uint128_t third;
-    uint128_t forth;
-    uint128_t fifth;
-    uint128_t sixth;
-    uint128_t seventh;
-    uint128_t eight;
+    uint8_t hexbox[128];
+    uint16_t hid;
 };
 
 //typedefs:
@@ -25,39 +14,36 @@ struct hash1024 {
 //enums:
 
 //functions:
-void encode (char input);
+void charsToHex(const char *input, int length, uint8_t *hexBox);
 void dupper (char input);
 
 //main:
 int main () {
-    char input[128];
+    const char input[256];
+    uint8_t convertedHex[128];
 
     printf("Enter input: ");
     scanf(" %s", &input);
 
     size_t sizeInput = strlen(input);
+    printf("%lld \n", sizeInput);
 
-    printf("%lld /n", sizeInput);
+    charsToHex (input, sizeInput, convertedHex);
 
-    if (sizeInput == 0) {
-        printf("error: you didnt give any input!");
-    }
-    else if (sizeInput >= 16) {
-        printf("major cloning in work.");
-    }
-    else if (sizeInput < 16) {
-        printf("cloning in work.");
-    }
-    else {
-        printf("error, your input is too large.");
+    printf ("Finished \n");
+
+    for (int i = 0; i < sizeInput; i++) {
+        printf("0x%02X \n", convertedHex[i]);
     }
 
-
+    // End point
     return 0;
 }
 
-void encode (char input) {
-
+void charsToHex(const char *input, int length, uint8_t *hexBox) {
+    for (int i = 0; i < length; i++) {
+        hexBox[i] = (unsigned char)input[i];
+    }
 }
 
 void dupper (char input) {}
