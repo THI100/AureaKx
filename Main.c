@@ -14,8 +14,8 @@ struct hash1024 {
 // --------------------- Function Prototypes --------------------- \\
 
 void converter(const char *input, size_t length, uint8_t *hexBox);
-void autoFill(uint8_t *hexBox, size_t length, int capacity);
-void compactor (uint8_t *hexBox, size_t length);
+void autoFill(uint8_t *hexBox, size_t length, int capacity, uint8_t *hashBoxH);
+void compactor (uint8_t *hexBox, size_t length, int capacity, uint8_t *hashBoxH);
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -26,36 +26,48 @@ int main() {
 
     // Main variables:
     char input[buffer];
-    uint8_t inputHex[limit];
+    uint8_t inputHex[buffer];
+    uint8_t hashBox[limit];
+
+    // Starting hashbox:
+    for (int i = 0; i < limit; i++) {
+        hashBox[i] = 0;
+    }
 
     // Getters:
     printf("Enter input: ");
     fgets(input, buffer, stdin);
     input[strlen(input) - 1] = '\0';
 
+    // size of the input:
     size_t sizeInput = strlen(input);
     printf("Input size: %zu\n", sizeInput);
 
+    // Converting and printing:
     converter(input, sizeInput, inputHex);
-
     printf("Hexs:");
     for (int i = 0; i < sizeInput; i++) {
         printf("0x%02X ", inputHex[i]);
         if ((i + 1) % 16 == 0) printf("\n");
     }
 
-    autoFill(inputHex, sizeInput, limit);
+    // fill or compact (please, do not change here):
     if (sizeInput < limit) {
-        compactor(inputHex, sizeInput);
+        autoFill(inputHex, sizeInput, buffer, hashBox);
+    }
+    else if (sizeInput == limit) {
+        for (int i = 0; i < sizeInput; i++) {
+            hashBox[i] = inputHex[i];
+        }
     }
     else {
-        autoFill(inputHex, sizeInput, limit);
+        compactor(inputHex, sizeInput, buffer, hashBox);
     }
 
 
     printf("\n\n\n Hex output:\n");
     for (int i = 0; i < limit; i++) {
-        printf("0x%02X ", inputHex[i]);
+        printf("0x%02X ", hashBox[i]);
         if ((i + 1) % 16 == 0) printf("\n");
     }
 
@@ -70,7 +82,7 @@ void converter(const char *input, size_t length, uint8_t *hexBox) {
     }
 }
 
-void autoFill(uint8_t *hexBox, size_t length, const int capacity) {
+void autoFill(uint8_t *hexBox, size_t length, const int capacity, uint8_t *hashBoxH) {
 
     const uint8_t container[] = {
         0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,
@@ -86,28 +98,20 @@ void autoFill(uint8_t *hexBox, size_t length, const int capacity) {
     };
 
     // Type one has duped values, but is random:
+
     for (int i = 0; i < length; i++) {
-        int temp = hexBox[i];
-        for (int j = length; j < capacity; j++) {
-            double goldenM = (1.618 * j);
-            int gMR = round(goldenM);
-            int selected = container[(temp * gMR) % j];
-            hexBox[j] = selected;
-        }
+        hashBoxH[i] = hexBox[i];
     }
 
-
+    for (int j = length; j < capacity; j++) {
+        double goldenM = round(1.618 * j);
+        int gMR = round(goldenM);
+        int temp = hashBoxH[(j * gMR) % length];
+        int selected = container[(temp * gMR) % j];
+        hashBoxH[j] = selected;
+    }
 }
 
-void compactor (uint8_t *hexBox, size_t length) {
-    for (int i = 0; i < length; i++) {
-        int temp1 = hexBox[i];
-        int temp2 = hexBox[i++];
-        if (temp1 + temp2 > 127) {
-            hexBox[i] = temp1 + temp2;
-        }
-        else {
-            hexBox[i] = temp1;
-        }
-    }
+void compactor (uint8_t *hexBox, size_t length, const int capacity, uint8_t *hashBoxH) {
+    printf("\n\n In construction... \n\n");
 }
