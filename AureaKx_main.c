@@ -14,9 +14,9 @@ struct hash1024 {
 // --------------------- Function Prototypes --------------------- \\
 
 void converter(const char *input, size_t length, uint8_t *hexBox);
-void autoFill(const uint8_t *hexBox, size_t length, int capacity, uint8_t *hashBoxH);
-void compactor (const uint8_t *hexBox, size_t length, int capacity, uint8_t *hashBoxH);
-void goldenShuffler();
+void autoFill(const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
+void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
+void goldenShuffler(uint8_t *hashBox, size_t capacity, int rounds);
 void eulerShuffler();
 void differentiator();
 
@@ -24,8 +24,9 @@ void differentiator();
 
 int main() {
     // consts:
-    const int limit = 128;
+    const size_t limit = 128;
     const int buffer = 512;
+    const int generalRounds = 64;
 
     // Main variables:
     char input[buffer];
@@ -64,6 +65,8 @@ int main() {
         compactor(inputHex, sizeInput, limit, hashBox);
     }
 
+    goldenShuffler(hashBox, limit, generalRounds);
+
 
     printf("\n\n\n Hex output:\n");
     for (int i = 0; i < limit; i++) {
@@ -80,7 +83,7 @@ void converter(const char *input, size_t length, uint8_t *hexBox) {
     memcpy(hexBox, input, length);
 }
 
-void autoFill(const uint8_t *hexBox, size_t length, const int capacity, uint8_t *hashBoxH) {
+void autoFill(const uint8_t *hexBox, size_t length, const size_t capacity, uint8_t *hashBoxH) {
 
     const uint8_t container_ASCII[] = {
         0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,
@@ -104,18 +107,18 @@ void autoFill(const uint8_t *hexBox, size_t length, const int capacity, uint8_t 
         int gMR = round(goldenM);
 
         if (gMR < container_size) {
-            int selected = container_ASCII[gMR];
+            int selected = container_ASCII[gMR % container_size];
             hashBoxH[j] = selected;
         }
         else {
             int temp = hashBoxH[(j * gMR) % length];
-            int selected = container_ASCII[(temp * gMR) % j];
-            hashBoxH[j] = selected % container_size;
+            int selected = container_ASCII[((temp * gMR) % j) % container_size];
+            hashBoxH[j] = selected;
         }
     }
 }
 
-void compactor(const uint8_t *hexBox, size_t length, const int capacity, uint8_t *hashBoxH) {
+void compactor(const uint8_t *hexBox, size_t length, const size_t capacity, uint8_t *hashBoxH) {
     // Temporary buffer to work on
     uint8_t tempBox[length];
     memcpy(tempBox, hexBox, length);
@@ -140,8 +143,19 @@ void compactor(const uint8_t *hexBox, size_t length, const int capacity, uint8_t
     memcpy(hashBoxH, tempBox, capacity);
 }
 
-void goldenShuffler() {
-    printf("In construction\n");
+void goldenShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
+    const double goldenR = 1.618;
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBox, capacity);
+
+    for (int i = 0; i < rounds; i++) {
+        double gR = goldenR * (i*i);
+        int gMR = round(gR);
+        uint8_t Temp1 = tempBox[gMR % capacity];
+        tempBox[(i*2) % capacity] = Temp1;
+    }
+
+    memcpy(hashBox, tempBox, capacity);
 }
 
 void eulerShuffler() {
