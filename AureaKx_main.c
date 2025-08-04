@@ -82,7 +82,7 @@ void converter(const char *input, size_t length, uint8_t *hexBox) {
 
 void autoFill(const uint8_t *hexBox, size_t length, const int capacity, uint8_t *hashBoxH) {
 
-    const uint8_t container[] = {
+    const uint8_t container_ASCII[] = {
         0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,
         0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33,
         0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D,
@@ -94,7 +94,7 @@ void autoFill(const uint8_t *hexBox, size_t length, const int capacity, uint8_t 
         0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79,
         0x7A, 0x7B, 0x7C, 0x7D, 0x7E
     };
-    int container_size = sizeof(container) / sizeof(container[0]);
+    int container_size = sizeof(container_ASCII) / sizeof(container_ASCII[0]);
 
     memcpy(hashBoxH, hexBox, length);
 
@@ -104,12 +104,12 @@ void autoFill(const uint8_t *hexBox, size_t length, const int capacity, uint8_t 
         int gMR = round(goldenM);
 
         if (gMR < container_size) {
-            int selected = container[gMR];
+            int selected = container_ASCII[gMR];
             hashBoxH[j] = selected;
         }
         else {
             int temp = hashBoxH[(j * gMR) % length];
-            int selected = container[(temp * gMR) % j];
+            int selected = container_ASCII[(temp * gMR) % j];
             hashBoxH[j] = selected % container_size;
         }
     }
