@@ -17,7 +17,7 @@ void converter(const char *input, size_t length, uint8_t *hexBox);
 void autoFill(const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
 void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
 void goldenShuffler(uint8_t *hashBox, size_t capacity, int rounds);
-void eulerShuffler();
+void eulerShuffler(uint8_t *hashBox, size_t capacity, int rounds);
 void differentiator();
 
 // -------------------------------- Main ----------------------------------- \\
@@ -65,9 +65,11 @@ int main() {
         compactor(inputHex, sizeInput, limit, hashBox);
     }
 
+    // Just use one of the shuffling methods!
     goldenShuffler(hashBox, limit, generalRounds);
 
 
+    // Printing Hash:
     printf("\n\n\n Hex output:\n");
     for (int i = 0; i < limit; i++) {
         printf("0x%02X ", hashBox[i]);
@@ -144,24 +146,37 @@ void compactor(const uint8_t *hexBox, size_t length, const size_t capacity, uint
 }
 
 void goldenShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
-    const double goldenR = 1.618;
+    const double golden = 1.618033988;
     uint8_t tempBox[capacity];
+    int roundsG = rounds * round(golden);
     memcpy(tempBox, hashBox, capacity);
 
-    for (int i = 0; i < rounds; i++) {
-        double gR = goldenR * (i*i);
-        int gMR = round(gR);
-        uint8_t Temp1 = tempBox[gMR % capacity];
+    for (int i = 0; i < roundsG; i++) {
+        double gM = golden * (i*i);
+        int gM_R = round(gM);
+        uint8_t Temp1 = tempBox[gM_R % capacity];
         tempBox[(i*2) % capacity] = Temp1;
     }
 
     memcpy(hashBox, tempBox, capacity);
 }
 
-void eulerShuffler() {
-    printf("In construction\n");
+void eulerShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
+    const double euler = 0.57721566;
+    uint8_t tempBox[capacity];
+    int roundsE = rounds * (round(euler*5.77));
+    memcpy(tempBox, hashBox, capacity);
+
+    for (int i = 0; i < roundsE; i++) {
+        double eM = euler * (i*i);
+        int eMR = round(eM);
+        uint8_t Temp1 = tempBox[eMR % capacity];
+        tempBox[(i*2) % capacity] = Temp1;
+    }
+
+    memcpy(hashBox, tempBox, capacity);
 }
 
-void differentiator() {
+void differentiator(uint8_t *hashBox, const size_t capacity) {
     printf("In construction\n");
 }
