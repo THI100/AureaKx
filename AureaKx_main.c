@@ -18,7 +18,7 @@ void autoFill(const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *ha
 void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
 void goldenShuffler(uint8_t *hashBox, size_t capacity, int rounds);
 void eulerShuffler(uint8_t *hashBox, size_t capacity, int rounds);
-void differentiator();
+void differentiator(uint8_t *hashBox, size_t capacity);
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -65,8 +65,10 @@ int main() {
         compactor(inputHex, sizeInput, limit, hashBox);
     }
 
+    differentiator(hashBox, limit);
     // Just use one of the shuffling methods!
     goldenShuffler(hashBox, limit, generalRounds);
+    differentiator(hashBox, limit);
 
 
     // Printing Hash:
@@ -179,4 +181,21 @@ void eulerShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
 
 void differentiator(uint8_t *hashBox, const size_t capacity) {
     printf("In construction\n");
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBox, capacity);
+
+    for (int i = 0; i < capacity; i++) {
+        int preTemp = tempBox[i];
+        int futTemp = tempBox[i+1];
+
+        if (preTemp == futTemp) {
+            int verTemp = preTemp + 1;
+            tempBox[i] = verTemp;
+        }
+        else {
+            tempBox[i] = preTemp;
+        }
+    }
+
+    memcpy(hashBox, tempBox, capacity);
 }
