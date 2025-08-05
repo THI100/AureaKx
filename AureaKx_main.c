@@ -19,6 +19,7 @@ void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *
 void goldenShuffler(uint8_t *hashBox, size_t capacity, int rounds);
 void eulerShuffler(uint8_t *hashBox, size_t capacity, int rounds);
 void differentiator(uint8_t *hashBox, size_t capacity);
+void corrector(uint8_t *hashBox, size_t capacity, uint8_t *inputOriginal, size_t sizeOriginal);
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -66,10 +67,13 @@ int main() {
     }
 
     differentiator(hashBox, limit);
+
     // Just use one of the shuffling methods!
     goldenShuffler(hashBox, limit, generalRounds);
     differentiator(hashBox, limit);
 
+    // corrector:
+    corrector(hashBox, limit, inputHex, sizeInput);
 
     // Printing Hash:
     printf("\n\n\n Hex output:\n");
@@ -107,16 +111,16 @@ void autoFill(const uint8_t *hexBox, size_t length, const size_t capacity, uint8
 
     // semi-Perfection (just doubles one-time the same ASCII):
     for (size_t j = length; j < capacity; j++) {
-        double goldenM = ((1.618*(j/3.74)) * j);
-        int gMR = round(goldenM);
+        double planFei_jj = ((6.62606*(j/4.66920)) * j);
+        int pfjjR = round(planFei_jj);
 
-        if (gMR < container_size) {
-            int selected = container_ASCII[gMR % container_size];
+        if (pfjjR < container_size) {
+            int selected = container_ASCII[pfjjR % container_size];
             hashBoxH[j] = selected;
         }
         else {
-            int temp = hashBoxH[(j * gMR) % length];
-            int selected = container_ASCII[((temp * gMR) % j) % container_size];
+            int temp = hashBoxH[(j * pfjjR) % length];
+            int selected = container_ASCII[((temp * pfjjR) % j) % container_size];
             hashBoxH[j] = selected;
         }
     }
@@ -164,7 +168,7 @@ void goldenShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
 }
 
 void eulerShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
-    const double euler = 0.57721566;
+    const double euler = 2.71828;
     uint8_t tempBox[capacity];
     int roundsE = rounds * (round(euler*5.77));
     memcpy(tempBox, hashBox, capacity);
@@ -180,7 +184,6 @@ void eulerShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
 }
 
 void differentiator(uint8_t *hashBox, const size_t capacity) {
-    printf("In construction\n");
     uint8_t tempBox[capacity];
     memcpy(tempBox, hashBox, capacity);
 
@@ -198,4 +201,28 @@ void differentiator(uint8_t *hashBox, const size_t capacity) {
     }
 
     memcpy(hashBox, tempBox, capacity);
+}
+
+void corrector(uint8_t *hashBox, const size_t capacity, uint8_t *inputOriginal, const size_t sizeOriginal) {
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBox, capacity);
+
+    // Sum all values
+    uint32_t sumHash = 0;
+    for (size_t i = 0; i < sizeOriginal; i++) {
+        sumHash += inputOriginal[i];
+    }
+
+    // Determine if the sum is odd or even
+    uint8_t correction = (sumHash % 2 == 0) ? 2 : 1;
+
+    // Apply the correction to specified indices
+    size_t indices[] = {1, 3, 5, 7, 31};
+    for (size_t i = 0; i < 5; i++) {
+        size_t idx = indices[i];
+        tempBox[idx] += correction;
+    }
+
+    memcpy(hashBox, tempBox, capacity);
+
 }
