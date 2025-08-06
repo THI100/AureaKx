@@ -6,6 +6,7 @@
 
 #include "Shufflers.h"
 #include "Solutioners.h"
+#include "Logics.h"
 
 // ----------------------------------- Structs -------------------------------------- \\
 

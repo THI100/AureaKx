@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 0.1.1nl v                                                                                   |
+| **Version**                     | 0.1.2nf v                                                                                  |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                            |
@@ -16,9 +16,9 @@
 | **Deterministic?**              | ✅ Yes                                                                                      |
 | **Salt Support**                | ❌ No (Coming soon)                                                                         |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
-| **Streaming Support**           | Unknown                                                                                    |
+| **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | Unknown                                                                                    |
-| **Known Attacks / Weaknesses**  | Unknown                                                                                    |
+| **Known Attacks / Weaknesses**  | Weak on indexes: 1, 3, 5, 7, 31                                                            |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
 | **Open Source?**                | ✅ Yes                                                                                      |
