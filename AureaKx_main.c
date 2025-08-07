@@ -51,6 +51,12 @@ int main() {
         if ((i + 1) % 16 == 0) printf("\n");
     }
 
+    uint32_t sumHash = 0;
+    for (size_t i = 0; i < sizeInput; i++) {
+        sumHash += inputHex[i];
+    }
+    uint32_t oeInput = sumHash % 2;
+
     // fill or compact (please, do not change here):
     if (sizeInput < limit) {
         autoFill(inputHex, sizeInput, limit, hashBox);
@@ -68,10 +74,15 @@ int main() {
 
     // Just use one of the shuffling methods!
     goldenShuffler(hashBox, limit, generalRounds);
+    logicOpps(hashBox, oeInput , limit);
     differentiator(hashBox, limit);
 
     // corrector:
     corrector(hashBox, limit, inputHex, sizeInput);
+
+    // Logics:
+    logMathOpps(hashBox, oeInput , limit);
+    eulerShuffler(hashBox, limit, generalRounds);
 
     // Printing Hash:
     printf("\n\n\n Hex output:\n");
