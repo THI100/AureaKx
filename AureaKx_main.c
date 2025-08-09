@@ -4,30 +4,18 @@
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
-#include "Shufflers.h"
-#include "Solutioners.h"
-#include "Logics.h"
-
-// ----------------------------------- Structs -------------------------------------- \\
-
-struct hash1024 {
-    uint8_t hexBox[128];
-    uint16_t id;
-};
-
-// ------------------------------ Function Prototypes -------------------------------- \\
-
-
+#include "Internal_dependencies/Shufflers.h"
+#include "Internal_dependencies/Solutioners.h"
+#include "Internal_dependencies/Logics.h"
 
 // -------------------------------- Main ----------------------------------- \\
 
 int main() {
+
     // consts:
     const size_t limit = 128;
     const int buffer = 512;
     const int generalRounds = 64;
-
-    // Main variables:
     char input[buffer];
     uint8_t inputHex[buffer];
     uint8_t hashBox[limit];
@@ -39,11 +27,9 @@ int main() {
     fgets(input, buffer, stdin);
     input[strlen(input) - 1] = '\0';
 
-    // size of the input:
     size_t sizeInput = strlen(input);
     printf("Input size: %zu\n", sizeInput);
 
-    // Converting and printing:
     converter(input, sizeInput, inputHex);
     printf("Hexs:");
     for (int i = 0; i < sizeInput; i++) {
@@ -57,7 +43,7 @@ int main() {
     }
     uint32_t oeInput = sumHash % 2;
 
-    // fill or compact (please, do not change here):
+    // Using Internal dependecies:
     if (sizeInput < limit) {
         autoFill(inputHex, sizeInput, limit, hashBox);
     }
@@ -72,17 +58,16 @@ int main() {
 
     differentiator(hashBox, limit);
 
-    // Just use one of the shuffling methods!
     goldenShuffler(hashBox, limit, generalRounds);
     logicOpps(hashBox, oeInput , limit);
     differentiator(hashBox, limit);
 
-    // corrector:
     corrector(hashBox, limit, inputHex, sizeInput);
 
-    // Logics:
     logMathOpps(hashBox, oeInput , limit);
     eulerShuffler(hashBox, limit, generalRounds);
+
+
 
     // Printing Hash:
     printf("\n\n\n Hex output:\n");
@@ -93,5 +78,3 @@ int main() {
 
     return 0;
 }
-
-// ---------------------------- Functions -------------------------------- \\

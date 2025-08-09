@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "Logics.h"
+#include "../Logics.h"
 
 void bloomHash(int Temp1, int Temp2, uint8_t *tempBox, size_t capacity);
 
