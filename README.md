@@ -4,6 +4,7 @@
 | **Version**                     | 0.1.5TS v                                                                                  |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
+| **Last Update**                 | 09/08/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                            |
 | **Use Case**                    | File Integrity                                                                             |
 | **Hash Size (bits)**            | 1024x                                                                                      |
@@ -17,7 +18,7 @@
 | **Salt Support**                | ❌ No (Coming soon)                                                                         |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
 | **Streaming Support**           | No                                                                                         |
-| **Hardware Acceleration**       | Unknown                                                                                    |
+| **Hardware Acceleration**       | No                                                                                         |
 | **Known Attacks / Weaknesses**  | Weak on indexes: 1, 3, 5, 7, 31                                                            |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
@@ -25,5 +26,5 @@
 | **License**                     | MIT                                                                                        |
 | **Reference Implementation**    | Blockchain and crypto currencies                                                           |
 | **Documentation / Specs URL**   | [github.com/THI100/AureaKx](https://github.com/THI100/AureaKx)                             |
-| **Test Vectors Available?**     | ❌ No                                                                                       |
+| **Test Vectors Available?**     | ✅ Yes                                                                                      |
 | **Notes / Other Features**      | Mathematical constants, Auto-fill, Compactor, Converter, bit-wise and byte-wise functions. |
