@@ -2,7 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../Solutioners.h"
+
+#include "Solutioners.h"
 
 // ---------------------------- Functions -------------------------------- \\
 

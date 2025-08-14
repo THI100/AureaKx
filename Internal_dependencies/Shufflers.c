@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "../Shufflers.h"
+#include "Shufflers.h"
 
 // ---------------------------- Functions -------------------------------- \\
 

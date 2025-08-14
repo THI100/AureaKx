@@ -11,7 +11,7 @@
 
 // -------------------------------- Main ----------------------------------- \\
 
-int TestVector() {
+int main() {
     // consts:
     const size_t limit = 128;    // hash size in bytes
     const size_t buffer = 4096;  // input buffer size
