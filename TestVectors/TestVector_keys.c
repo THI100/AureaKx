@@ -5,9 +5,9 @@
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
-#include "../Internal_dependencies/Shufflers.h"
-#include "../Internal_dependencies/Solutioners.h"
-#include "../Internal_dependencies/Logics.h"
+#include "Internal_dependencies/Shufflers.h"
+#include "Internal_dependencies/Solutioners.h"
+#include "Internal_dependencies/Logics.h"
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -25,7 +25,7 @@ int main() {
     memset(hash, 0, limit);
 
     // open input file for reading
-    FILE *input_file = fopen("To_make_keys.txt", "r");
+    FILE *input_file = fopen("tomakekeys.txt", "r");
     if (!input_file) {
         perror("Error opening input file");
         return 1;
@@ -87,10 +87,10 @@ int main() {
     // write output file
     FILE *output_file = fopen("Keys.txt", "w");
     if (!output_file) {
-        perror("Error opening output file");
+        perror("Error opening output file: Keys.txt");
         return 1;
     }
-    fprintf(output_file, "%s\n", hash_str);
+    fprintf(output_file, "0x%s\n", hash_str);
     fclose(output_file);
 
     // also print for verification
