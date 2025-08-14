@@ -90,7 +90,7 @@ void differentiator(uint8_t *hashBox, const size_t capacity) {
     memcpy(hashBox, tempBox, capacity);
 }
 
-void corrector(uint8_t *hashBox, const size_t capacity, uint8_t *inputOriginal, const size_t sizeOriginal) {
+void weakIndexCorrector(uint8_t *hashBox, const size_t capacity, uint8_t *inputOriginal, const size_t sizeOriginal) {
     uint8_t tempBox[capacity];
     memcpy(tempBox, hashBox, capacity);
 

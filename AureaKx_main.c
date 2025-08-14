@@ -7,7 +7,7 @@
 #include "Internal_dependencies/Shufflers.h"
 #include "Internal_dependencies/Solutioners.h"
 #include "Internal_dependencies/Logics.h"
-#include "Internal_dependencies/Salting.h"
+// #include "Internal_dependencies/Salting.h"
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -32,7 +32,8 @@ int main() {
     printf("Input size: %zu\n", sizeInput);
 
     converter(input, sizeInput, inputHex);
-    saltAdd(inputHex, sizeInput);
+    // saltAdd(inputHex, sizeInput);
+    // const size_t inputSaltedSize = inputHex + 16; // 16 is added because of the Salting rounds
     printf("Hexs:");
     for (int i = 0; i < sizeInput; i++) {
         printf("0x%02X ", inputHex[i]);
@@ -60,17 +61,15 @@ int main() {
 
     differentiator(hashBox, limit);
 
-    for (int i = 0; i < generalRounds; i++) {
+    for (int i = 0; i < generalRounds/2; i++) {
         goldenShuffler(hashBox, limit, generalRounds);
         logicOpps(hashBox, oeInput , limit);
-        for (int j = 0; j % 9 == i % 2; j++) {
-            differentiator(hashBox, limit);
-            corrector(hashBox, limit, inputHex, sizeInput);
-        }
         logMathOpps(hashBox, oeInput , limit);
         eulerShuffler(hashBox, limit, generalRounds);
     }
 
+    differentiator(hashBox, limit);
+    weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
 
     // Printing Hash:
     printf("\n\n\n Hex output:\n");
