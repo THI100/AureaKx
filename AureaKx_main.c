@@ -71,12 +71,14 @@ int main() {
     differentiator(hashBox, limit);
     weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
 
-    // Printing Hash:
-    printf("\n\n\n Hex output:\n");
-    for (int i = 0; i < limit; i++) {
-        printf("0x%02X ", hashBox[i]);
-        if ((i + 1) % 16 == 0) printf("\n");
+    char hashStr[limit * 2 + 1];
+    for (size_t i = 0; i < limit; i++) {
+        sprintf(hashStr + (i * 2), "%02x", hashBox[i]);
     }
+    hashStr[limit * 2] = '\0';
+
+    // Printing Hash:
+    printf("\n\n\n Hex output: 0x%s", hashStr);
 
     return 0;
 }
