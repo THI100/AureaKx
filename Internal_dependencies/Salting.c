@@ -1,26 +1,38 @@
 #include <stdint.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "Salting.h"
 
-void saltAdd (uint8_t *hashBox, size_t originalSize, const size_t salting_Rounds) {
+void saltAdd(uint8_t *hashBox, size_t originalSize, size_t salting_Rounds) {
     const double feigenbaum = 4.669201;
-    uint8_t tempbox[(originalSize + salting_Rounds)];
-    memcpy(tempbox, hashBox, (originalSize + salting_Rounds));
+    const uint8_t saltList[] = {
+        0x21, 0x3A, 0x73, 0x7A,
+        0x45, 0x50, 0x61, 0x4D,
+        0x77, 0x4C, 0x69, 0x67,
+        0x4C, 0x2E, 0x5C, 0x6A
+    };
+    const size_t saltSize = sizeof(saltList) / sizeof(saltList[0]);
 
-    const uint8_t saltList[] = {0x21, 0x3A, 0x73, 0x7A, 0x45, 0x50, 0x61, 0x4D,
-                                0x77, 0x4C, 0x69, 0x67, 0x4C, 0x2E, 0x5C, 0x6A};
+    // Make sure we have enough space in the destination
+    uint8_t *tempbox = malloc(originalSize + salting_Rounds);
+    if (!tempbox) return; // malloc failed
+    memcpy(tempbox, hashBox, originalSize);
 
-    for (int i = 0; i < salting_Rounds; i++) {
-        uint8_t base = tempbox[originalSize];
-        double fB = (base*feigenbaum)/i;
-        int fBR = round(fB);
+    for (size_t i = 0; i < salting_Rounds; i++) {
+        // use a valid base from the original data
+        uint8_t base = hashBox[i % originalSize];
+
+        // avoid division by zero
+        double fB = (i == 0) ? (base * feigenbaum) : (base * feigenbaum) / (double)i;
+
+        int fBR = (int)fabs(round(fB)) % saltSize; // keep index inside saltList
         tempbox[originalSize + i] = saltList[fBR];
     }
 
-    size_t tempor = originalSize + salting_Rounds;
-    originalSize = tempor;
+    // Copy back to the original buffer (caller must have allocated enough space!)
+    memcpy(hashBox, tempbox, originalSize + salting_Rounds);
 
-    memcpy(hashBox, tempbox, originalSize);
+    free(tempbox);
 }
