@@ -7,7 +7,7 @@
 #include "Internal_dependencies/Shufflers.h"
 #include "Internal_dependencies/Solutioners.h"
 #include "Internal_dependencies/Logics.h"
-// #include "Internal_dependencies/Salting.h"
+#include "Internal_dependencies/Salting.h"
 
 // -------------------------------- Main ----------------------------------- \\
 
@@ -17,6 +17,7 @@ int main() {
     const size_t limit = 128;
     const int buffer = 512;
     const int generalRounds = 64;
+    const size_t salting_rounds = 16;
     char input[buffer];
     uint8_t inputHex[buffer];
     uint8_t hashBox[limit];
@@ -32,8 +33,7 @@ int main() {
     printf("Input size: %zu\n", sizeInput);
 
     converter(input, sizeInput, inputHex);
-    // saltAdd(inputHex, sizeInput);
-    // const size_t inputSaltedSize = inputHex + 16; // 16 is added because of the Salting rounds
+    saltAdd(inputHex, sizeInput, salting_rounds);
     printf("Hexs:");
     for (int i = 0; i < sizeInput; i++) {
         printf("0x%02X ", inputHex[i]);

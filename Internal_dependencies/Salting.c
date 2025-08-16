@@ -4,21 +4,23 @@
 
 #include "Salting.h"
 
-void saltAdd (uint8_t *hashBox, const size_t originalSize) {
-    const int saltAmount = 16;
+void saltAdd (uint8_t *hashBox, size_t originalSize, const size_t salting_Rounds) {
     const double feigenbaum = 4.669201;
-    uint8_t tempbox[originalSize + saltAmount];
-    memcpy(tempbox, hashBox, originalSize + saltAmount);
+    uint8_t tempbox[(originalSize + salting_Rounds)];
+    memcpy(tempbox, hashBox, (originalSize + salting_Rounds));
 
     const uint8_t saltList[] = {0x21, 0x3A, 0x73, 0x7A, 0x45, 0x50, 0x61, 0x4D,
                                 0x77, 0x4C, 0x69, 0x67, 0x4C, 0x2E, 0x5C, 0x6A};
 
-    for (int i = 0; i < saltAmount; i++) {
+    for (int i = 0; i < salting_Rounds; i++) {
         uint8_t base = tempbox[originalSize];
         double fB = (base*feigenbaum)/i;
         int fBR = round(fB);
         tempbox[originalSize + i] = saltList[fBR];
     }
 
-    memcpy(hashBox, tempbox, originalSize + saltAmount);
+    size_t tempor = originalSize + salting_Rounds;
+    originalSize = tempor;
+
+    memcpy(hashBox, tempbox, originalSize);
 }
