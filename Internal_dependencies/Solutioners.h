@@ -6,6 +6,6 @@ void autoFill(const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *ha
 void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *hashBoxH);
 void differentiator(uint8_t *hashBox, size_t capacity);
 void weakIndexCorrector(uint8_t *hashBox, size_t capacity, uint8_t *inputOriginal, size_t sizeOriginal);
-void compactor256x(const size_t capacity, uint8_t *hashBoxH)
+void compactor256x(const size_t capacity, uint8_t *hashBoxH);
 
 #endif //SOLUTIONERS_H
