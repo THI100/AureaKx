@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 0.2.3                                                                                    |
+| **Version**                     | 0.2.3.1                                                                                    |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                            |
@@ -11,8 +11,8 @@
 | **Collision Resistance**        | ✅ Unknown                                                                                  |
 | **Pre-image Resistance**        | ✅ Unknown                                                                                  |
 | **Second Pre-image Resistance** | ✅ Unknown                                                                                  |
-| **Speed (ops/sec)**             | Unknown                                                                                    |
-| **Memory Usage**                | Unknown                                                                                    |
+| **Speed (ops/sec)**             | 1/0.000220                                                                                 |
+| **Memory Usage**                | 9520 KB                                                                                    |
 | **Deterministic?**              | ✅ Yes                                                                                      |
 | **Salt Support**                | ✅ Yes (16 rounds)                                                                          |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
