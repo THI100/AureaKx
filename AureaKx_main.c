@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <sys/resource.h>
+#include <time.h>
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
@@ -11,25 +13,38 @@
 
 // -------------------------------- Main ----------------------------------- \\
 
+void print_memory_usage() {
+    struct rusage usage;
+    getrusage(RUSAGE_SELF, &usage);
+    printf("Memory used: %ld kilobytes\n", usage.ru_maxrss);
+}
+
 int main() {
+
+    clock_t start, end;
+    double cpu_time_used;
 
     // consts:
     const size_t limit = 128;
-    const int buffer = 512;
+    const int buffer = 1048576;
     const int generalRounds = 64;
     const size_t salting_rounds = 16;
     char input[buffer];
     uint8_t inputHex[buffer];
     uint8_t hashBox[limit];
 
+    print_memory_usage();
+
     memset(hashBox, 0, limit);
 
     // Getters:
     printf("Enter input: ");
     fgets(input, buffer, stdin);
-    input[strlen(input) - 1] = '\0';
+    size_t sizeInput = strcspn(input, "\n");
+    input[sizeInput] = '\0';
 
-    size_t sizeInput = strlen(input);
+    start = clock();
+
     printf("Input size: %zu\n", sizeInput);
 
     converter(input, sizeInput, inputHex);
@@ -74,13 +89,23 @@ int main() {
     // array of hash to string of hash
 
     char hashStr[limit * 2 + 1];
+    static const char hex_digits[] = "0123456789abcdef";
+
     for (size_t i = 0; i < limit; i++) {
-        sprintf(hashStr + (i * 2), "%02x", hashBox[i]);
+        hashStr[i * 2]     = hex_digits[hashBox[i] >> 4];
+        hashStr[i * 2 + 1] = hex_digits[hashBox[i] & 0x0F];
     }
     hashStr[limit * 2] = '\0';
 
     // Printing Hash:
-    printf("\n\n\n Hex output: 0x%s", hashStr);
+    printf("\n\n\n Hex output: 0x%s \n\n", hashStr);
+
+    end = clock();
+
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Execution time: %.6f seconds\n", cpu_time_used);
+
+    print_memory_usage();
 
     return 0;
 }
