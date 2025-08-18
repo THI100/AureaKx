@@ -26,7 +26,7 @@ int main() {
 
     // consts:
     const size_t limit = 128;
-    const int buffer = 4096;
+    const int buffer = 1048576;
     const int generalRounds = 64;
     const size_t salting_rounds = 16;
     char input[buffer];
@@ -40,11 +40,11 @@ int main() {
     // Getters:
     printf("Enter input: ");
     fgets(input, buffer, stdin);
-    input[strlen(input) - 1] = '\0';
+    size_t sizeInput = strcspn(input, "\n");
+    input[sizeInput] = '\0';
 
     start = clock();
 
-    size_t sizeInput = strlen(input);
     printf("Input size: %zu\n", sizeInput);
 
     converter(input, sizeInput, inputHex);
@@ -89,8 +89,11 @@ int main() {
     // array of hash to string of hash
 
     char hashStr[limit * 2 + 1];
+    static const char hex_digits[] = "0123456789abcdef";
+
     for (size_t i = 0; i < limit; i++) {
-        sprintf(hashStr + (i * 2), "%02x", hashBox[i]);
+        hashStr[i * 2]     = hex_digits[hashBox[i] >> 4];
+        hashStr[i * 2 + 1] = hex_digits[hashBox[i] & 0x0F];
     }
     hashStr[limit * 2] = '\0';
 
