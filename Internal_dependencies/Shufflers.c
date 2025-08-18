@@ -9,7 +9,7 @@
 void goldenShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
     const double golden = 1.618033988;
     uint8_t tempBox[capacity];
-    int roundsG = rounds * round(golden);
+    int roundsG = round(rounds * golden);
     memcpy(tempBox, hashBox, capacity);
 
     for (int i = 0; i < roundsG; i++) {
@@ -25,7 +25,7 @@ void goldenShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
 void eulerShuffler(uint8_t *hashBox, const size_t capacity, const int rounds) {
     const double euler = 2.71828;
     uint8_t tempBox[capacity];
-    int roundsE = rounds * (round(euler*5.77));
+    int roundsE = round(rounds * (euler));
     memcpy(tempBox, hashBox, capacity);
 
     for (int i = 0; i < roundsE; i++) {

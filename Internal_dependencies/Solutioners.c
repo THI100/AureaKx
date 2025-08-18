@@ -113,3 +113,29 @@ void weakIndexCorrector(uint8_t *hashBox, const size_t capacity, uint8_t *inputO
     memcpy(hashBox, tempBox, capacity);
 
 }
+
+void compactor256x(const size_t capacity, uint8_t *hashBoxH) {
+    // Temporary buffer to work on
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBoxH, capacity);
+    size_t currentLength = capacity;
+    size_t newHashLength = capacity / 4;
+
+    // Reducing until 32 items
+    while (currentLength > newHashLength) {
+        size_t newLength = 0;
+        for (size_t i = 0; i < currentLength; i += 2) {
+            uint16_t sum = tempBox[i];
+            if (i + 1 < currentLength) {
+                sum += tempBox[i + 1];
+            }
+            // moderator
+            uint8_t reduced = (sum > 127) ? (sum % 127) : sum;
+            tempBox[newLength++] = reduced;
+        }
+        currentLength = newLength;
+    }
+
+    // Passing temp to hash
+    memcpy(hashBoxH, tempBox, newHashLength);
+}

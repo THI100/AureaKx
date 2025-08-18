@@ -46,7 +46,7 @@ int main() {
     }
     uint32_t oeInput = sumHash % 2;
 
-    // Using Internal dependecies:
+    // Using Internal dependencies:
     if (sizeInput < limit) {
         autoFill(inputHex, sizeInput, limit, hashBox);
     }
@@ -70,6 +70,8 @@ int main() {
 
     differentiator(hashBox, limit);
     weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
+
+    // array of hash to string of hash
 
     char hashStr[limit * 2 + 1];
     for (size_t i = 0; i < limit; i++) {
