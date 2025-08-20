@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 0.2.3.1                                                                                    |
+| **Version**                     | 0.2.4                                                                                      |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                            |
@@ -18,12 +18,12 @@
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
-| **Known Attacks / Weaknesses**  | Weak on indexes: 1, 3, 5, 7, 31                                                            |
+| **Known Attacks / Weaknesses**  | None                                                                                       |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
 | **Open Source?**                | ✅ Yes                                                                                      |
 | **License**                     | MIT                                                                                        |
 | **Reference Implementation**    | Blockchain and crypto currencies                                                           |
 | **Documentation / Specs URL**   | [github.com/THI100/AureaKx](https://github.com/THI100/AureaKx)                             |
-| **Test Vectors Available?**     | ❌ No                                                                                       |
+| **Test Vectors Available?**     | ✅ Yes                                                                                      |
 | **Notes / Other Features**      | Mathematical constants, Auto-fill, Compactor, Converter, bit-wise and byte-wise functions. |

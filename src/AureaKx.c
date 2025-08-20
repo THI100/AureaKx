@@ -6,10 +6,10 @@
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
-#include "Internal_dependencies/Shufflers.h"
-#include "Internal_dependencies/Solutioners.h"
-#include "Internal_dependencies/Logics.h"
-#include "Internal_dependencies/Salting.h"
+#include "../include/Shufflers.h"
+#include "../include/Solutioners.h"
+#include "../include/Logics.h"
+#include "../include/Salting.h"
 
 // -------------------------------- Main ----------------------------------- \\
 

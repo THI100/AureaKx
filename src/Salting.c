@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "Salting.h"
+#include "../include/Salting.h"
 
 void saltAdd(uint8_t *hashBox, size_t originalSize, size_t salting_Rounds) {
     const double feigenbaum = 4.669201;
