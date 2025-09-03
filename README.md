@@ -12,7 +12,7 @@
 | **Pre-image Resistance**        | ✅ Unknown                                                                                  |
 | **Second Pre-image Resistance** | ✅ Unknown                                                                                  |
 | **Speed (ops/sec)**             | 1/0.000220                                                                                 |
-| **Memory Usage**                | 9520 KB                                                                                    |
+| **Memory Usage**                | 9.5 MB                                                                                     |
 | **Deterministic?**              | ✅ Yes                                                                                      |
 | **Salt Support**                | ✅ Yes (16 rounds)                                                                          |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
