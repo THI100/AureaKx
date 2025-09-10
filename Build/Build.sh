@@ -1,7 +1,7 @@
-#use 'chmod +x Build.sh' to enable running the file.
+#use 'chmod +x Build.sh' to enable running the file, then run the file by using './Build.sh'
 
 echo "Compiling..."
 
-gcc -O3 -march=native -funroll-loops src/AureaKx.c src/Logics.c src/Salting.c src/Shufflers.c src/Solutioners.c -o AureaKx -lm
+gcc -O3 -march=native -funroll-loops src/TvMain.c src/AureaKx.c src/Logics.c src/Salting.c src/Shufflers.c src/Solutioners.c -o benchmark -lm
 
-echo "Run: AureaKx.exe for windows or ./AureaKx for linux/mac"
+echo "Run: benchmark.exe for windows or ./benchmark for linux/mac"

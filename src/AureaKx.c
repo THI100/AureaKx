@@ -9,6 +9,7 @@
 #include "../include/Solutioners.h"
 #include "../include/Logics.h"
 #include "../include/Salting.h"
+#include "../include/AureaKx.h"
 
 // -------------------------------- function ----------------------------------- \\
 
