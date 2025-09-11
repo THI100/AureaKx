@@ -8,13 +8,13 @@
 | **Use Case**                    | File Integrity                                                                             |
 | **Hash Size (bits)**            | 1024x                                                                                      |
 | **Output Format**               | Hex                                                                                        |
-| **Collision Resistance**        | ✅ Unknown                                                                                  |
-| **Pre-image Resistance**        | ✅ Unknown                                                                                  |
-| **Second Pre-image Resistance** | ✅ Unknown                                                                                  |
+| **Collision Resistance**        | ✅ High                                                                                  |
+| **Pre-image Resistance**        | ✅ Medium                                                                                  |
+| **Second Pre-image Resistance** | ✅ Low                                                                                  |
 | **Speed (ops/sec)**             | 1/0.000220                                                                                 |
 | **Memory Usage**                | 9.5 MB                                                                                     |
 | **Deterministic?**              | ✅ Yes                                                                                      |
-| **Salt Support**                | ✅ Yes (16 rounds)                                                                          |
+| **Salt Support**                | ✅ Yes                                                                          |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
