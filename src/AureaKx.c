@@ -5,17 +5,15 @@
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
-#include "../include/Shufflers.h"
 #include "../include/Solutioners.h"
-#include "../include/Logics.h"
 #include "../include/Salting.h"
+#include "../include/AureaKx.h"
 
 // -------------------------------- function ----------------------------------- \\
 
-char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
+char* hash (const char input[], uint16_t salting)  {
     const size_t limit = 128;
     uint8_t hashBox[limit];
-    uint16_t g_rounds = 0;
     memset(hashBox, 0, limit);
 
     const size_t sizeInput = strlen(input);
@@ -28,19 +26,6 @@ char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
     else {
         salting = 0;
     }
-
-    if (rounds == 0 || rounds == 1) {
-        g_rounds = 64;
-    }
-    else {
-        g_rounds = rounds;
-    }
-
-    uint32_t sumHash = 0;
-    for (size_t i = 0; i < sizeInput; i++) {
-        sumHash += inputHex[i];
-    }
-    uint32_t oeInput = sumHash % 2;
 
     if (sizeInput < limit) {
         autoFill(inputHex, sizeInput, limit, hashBox);
@@ -55,16 +40,11 @@ char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
     }
 
     differentiator(hashBox, limit);
-
-    for (int i = 0; i < round(g_rounds/2); i++) {
-        goldenShuffler(hashBox, limit, g_rounds);
-        logicOpps(hashBox, oeInput , limit);
-        logMathOpps(hashBox, oeInput , limit);
-        eulerShuffler(hashBox, limit, g_rounds);
-    }
-
-    differentiator(hashBox, limit);
     weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
+    simple_shuffler(hashBox, limit, sizeInput);
+    compactor768x(limit, hashBox);
+    autoFill(hashBox, (limit / 4) * 3, limit, hashBox);
+    simple_shuffler(hashBox, limit, sizeInput);
 
     char* hashStr = malloc(limit * 2 + 1);
     if (!hashStr) return NULL;

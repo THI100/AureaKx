@@ -1,29 +1,29 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 1.0.1                                                                                      |
+| **Version**                     | 1.3.1                                                                                      |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
-| **Category**                    | ✅ Cryptographic                                                                            |
+| **Category**                    | ✅ Cryptographic                                                                           |
 | **Use Case**                    | File Integrity                                                                             |
 | **Hash Size (bits)**            | 1024x                                                                                      |
 | **Output Format**               | Hex                                                                                        |
-| **Collision Resistance**        | ✅ LOW                                                                                  |
-| **Pre-image Resistance**        | ✅ LOW                                                                                  |
-| **Second Pre-image Resistance** | ✅ LOW                                                                                  |
+| **Collision Resistance**        | ✅ High                                                                                    |
+| **Pre-image Resistance**        | ✅ Medium                                                                                  |
+| **Second Pre-image Resistance** | ✅ Low                                                                                     |
 | **Speed (ops/sec)**             | 1/0.000220                                                                                 |
 | **Memory Usage**                | 9.5 MB                                                                                     |
-| **Deterministic?**              | ✅ Yes                                                                                      |
-| **Salt Support**                | ✅ Yes (16 rounds)                                                                          |
-| **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
+| **Deterministic?**              | ✅ Yes                                                                                     |
+| **Salt Support**                | ✅ Yes                                                                                     |
+| **Keyed? (MAC/PRF)**            | ❌ No                                                                                      |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
-| **Known Attacks / Weaknesses**  | |ALL                                                                                       |
+| **Known Attacks / Weaknesses**  | ALL                                                                                       |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
-| **Open Source?**                | ✅ Yes                                                                                      |
+| **Open Source?**                | ✅ Yes                                                                                     |
 | **License**                     | MIT                                                                                        |
 | **Reference Implementation**    | Blockchain and crypto currencies                                                           |
 | **Documentation / Specs URL**   | [github.com/THI100/AureaKx](https://github.com/THI100/AureaKx)                             |
-| **Test Vectors Available?**     | ✅ Yes                                                                                      |
+| **Test Vectors Available?**     | ✅ Yes                                                                                     |
 | **Notes / Other Features**      | Mathematical constants, Auto-fill, Compactor, Converter, bit-wise and byte-wise functions. |
