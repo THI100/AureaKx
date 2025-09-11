@@ -11,10 +11,9 @@
 
 // -------------------------------- function ----------------------------------- \\
 
-char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
+char* hash (const char input[], uint16_t salting)  {
     const size_t limit = 128;
     uint8_t hashBox[limit];
-    uint16_t g_rounds = 0;
     memset(hashBox, 0, limit);
 
     const size_t sizeInput = strlen(input);
@@ -26,13 +25,6 @@ char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
     }
     else {
         salting = 0;
-    }
-
-    if (rounds == 0 || rounds == 1) {
-        g_rounds = 64;
-    }
-    else {
-        g_rounds = rounds;
     }
 
     if (sizeInput < limit) {
