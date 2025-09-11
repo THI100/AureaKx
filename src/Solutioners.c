@@ -144,9 +144,14 @@ void simple_shuffler(uint8_t *hashBoxH, const size_t capacity, const size_t orig
     uint8_t tempBox[capacity];
     memcpy(tempBox, hashBoxH, capacity);
 
-    for (size_t i = 0; i < capacity; i++) {
-        size_t swapIdx = (i * 32123 * originalSize) % capacity;
-        tempBox[i] = tempBox[swapIdx];
+    size_t seed = originalSize * 32123u + capacity;
+    for (size_t i = capacity - 1; i > 0; i--) {
+        seed = seed * 1103515245u + 12345u; // LCG
+        size_t j = seed % (i + 1);
+
+        uint8_t tmp = tempBox[i];
+        tempBox[i] = tempBox[j];
+        tempBox[j] = tmp;
     }
 
     memcpy(hashBoxH, tempBox, capacity);
