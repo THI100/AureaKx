@@ -8,9 +8,9 @@
 | **Use Case**                    | File Integrity                                                                             |
 | **Hash Size (bits)**            | 1024x                                                                                      |
 | **Output Format**               | Hex                                                                                        |
-| **Collision Resistance**        | ✅ Unknown                                                                                  |
-| **Pre-image Resistance**        | ✅ Unknown                                                                                  |
-| **Second Pre-image Resistance** | ✅ Unknown                                                                                  |
+| **Collision Resistance**        | ✅ LOW                                                                                  |
+| **Pre-image Resistance**        | ✅ LOW                                                                                  |
+| **Second Pre-image Resistance** | ✅ LOW                                                                                  |
 | **Speed (ops/sec)**             | 1/0.000220                                                                                 |
 | **Memory Usage**                | 9.5 MB                                                                                     |
 | **Deterministic?**              | ✅ Yes                                                                                      |
@@ -18,7 +18,7 @@
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                       |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
-| **Known Attacks / Weaknesses**  | None                                                                                       |
+| **Known Attacks / Weaknesses**  | |ALL                                                                                       |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
 | **Open Source?**                | ✅ Yes                                                                                      |
