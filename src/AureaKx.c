@@ -41,7 +41,7 @@ char* hash (const char input[], uint16_t salting)  {
 
     differentiator(hashBox, limit);
     weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
-    differentiator(hashBox, limit);
+    simple_shuffler(hashBox, limit, sizeInput);
 
     char* hashStr = malloc(limit * 2 + 1);
     if (!hashStr) return NULL;
