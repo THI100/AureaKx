@@ -7,7 +7,8 @@
 #include "../include/AureaKx.h"
 
 // --- Config ---
-#define NUM_TESTS 200000   // Change between 1000 and 1000000
+#define NUM_TESTS_PI 10000000   // limit of C programming language, 10 millions of attempts
+#define NUM_TESTS_COL 200000    // limit of performance, 200 Thousands of attempts
 #define MAX_INPUT_LEN 128  // Max length of generated input strings
 
 // Generate a unique deterministic string from an integer counter
@@ -22,52 +23,99 @@ void unique_utf8_string(char *buf, size_t max_len, unsigned long long counter) {
 }
 
 int main(void) {
-    srand((unsigned)time(NULL));
 
-    char **hashes = malloc(NUM_TESTS * sizeof(char*));
-    char **inputs = malloc(NUM_TESTS * sizeof(char*)); // keep original inputs too
-    if (!hashes || !inputs) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
+    int nc = 0;
+    printf("select a option of test, 1 for collision and 2 for second pre-image. \n");
+    scanf("%d", &nc);
 
-    size_t collisions = 0;
+    if (nc == 1) {
+        srand((unsigned)time(NULL));
 
-    for (size_t i = 0; i < NUM_TESTS; i++) {
-        char input[MAX_INPUT_LEN];
-        unique_utf8_string(input, MAX_INPUT_LEN, i + 1); // Always unique
+        char **hashes = malloc(NUM_TESTS_COL * sizeof(char*));
+        char **inputs = malloc(NUM_TESTS_COL * sizeof(char*)); // keep original inputs too
+        if (!hashes || !inputs) {
+            fprintf(stderr, "Memory allocation failed\n");
+            return 1;
+        }
 
-        // Run your hash function
-        char *h = hash(input, 42); // Example rounds & salting
-        if (!h) continue;
+        size_t collisions = 0;
 
-        // Save both the input and its hash
-        inputs[i] = strdup(input);
-        hashes[i] = strdup(h);
+        for (size_t i = 0; i < NUM_TESTS_COL; i++) {
+            char input[MAX_INPUT_LEN];
+            unique_utf8_string(input, MAX_INPUT_LEN, i + 1); // Always unique
 
-        // Compare with all previous hashes
-        for (size_t j = 0; j < i; j++) {
-            if (strcmp(hashes[i], hashes[j]) == 0) {
-                collisions++;
-                printf("\n[COLLISION #%zu]\n", collisions);
-                printf("  Input A: %s\n", inputs[j]);
-                printf("  Input B: %s\n", inputs[i]);
-                printf("  Hash   : %s\n", hashes[i]);
-                break;  // count once per new string
+            // Run your hash function
+            char *h = hash(input, 42); // Example rounds & salting
+            if (!h) continue;
+
+            // Save both the input and its hash
+            inputs[i] = strdup(input);
+            hashes[i] = strdup(h);
+
+            // Compare with all previous hashes
+            for (size_t j = 0; j < i; j++) {
+                if (strcmp(hashes[i], hashes[j]) == 0) {
+                    collisions++;
+                    printf("\n[COLLISION #%zu]\n", collisions);
+                    printf("  Input A: %s\n", inputs[j]);
+                    printf("  Input B: %s\n", inputs[i]);
+                    printf("  Hash   : %s\n", hashes[i]);
+                    break;  // count once per new string
+                }
             }
         }
+
+        printf("\nTotal tests: %d\n", NUM_TESTS_COL);
+        printf("Collisions found: %zu\n", collisions);
+
+        // Cleanup
+        for (size_t i = 0; i < NUM_TESTS_COL; i++) {
+            free(hashes[i]);
+            free(inputs[i]);
+        }
+        free(hashes);
+        free(inputs);
     }
 
-    printf("\nTotal tests: %d\n", NUM_TESTS);
-    printf("Collisions found: %zu\n", collisions);
+    else if (nc == 2) {
+        srand((unsigned)time(NULL));
 
-    // Cleanup
-    for (size_t i = 0; i < NUM_TESTS; i++) {
-        free(hashes[i]);
-        free(inputs[i]);
+        // Pick a known target
+        const char *targetInput = "SecretMessage123";
+        char *targetHash = hash(targetInput, 42); // Example parameter
+        if (!targetHash) {
+            fprintf(stderr, "Target hash computation failed\n");
+            return 1;
+        }
+
+        printf("Target Input: %s\n", targetInput);
+        printf("Target Hash : %s\n\n", targetHash);
+
+        // Attempt to find a pre-image
+        size_t found = 0;
+        for (size_t i = 1; i <= NUM_TESTS_PI; i++) {
+            char candidate[MAX_INPUT_LEN];
+            unique_utf8_string(candidate, MAX_INPUT_LEN, i);
+
+            char *h = hash(candidate, 42);
+            if (!h) continue;
+
+            if (strcmp(h, targetHash) == 0 && strcmp(candidate, targetInput) != 0) {
+                printf("[PRE-IMAGE FOUND]\n");
+                printf("  Candidate Input: %s\n", candidate);
+                printf("  Hash           : %s\n", h);
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            printf("No pre-image found after %d attempts.\n", NUM_TESTS_PI);
+        }
     }
-    free(hashes);
-    free(inputs);
+    else {
+        printf("Error: invalid input.");
+    }
 
     return 0;
 }
