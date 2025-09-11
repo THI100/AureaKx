@@ -5,10 +5,9 @@
 
 // ------------------------------- Intern Libraries --------------------------------- \\
 
-#include "../include/Shufflers.h"
 #include "../include/Solutioners.h"
-#include "../include/Logics.h"
 #include "../include/Salting.h"
+#include "../include/AureaKx.h"
 
 // -------------------------------- function ----------------------------------- \\
 
@@ -36,12 +35,6 @@ char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
         g_rounds = rounds;
     }
 
-    uint32_t sumHash = 0;
-    for (size_t i = 0; i < sizeInput; i++) {
-        sumHash += inputHex[i];
-    }
-    uint32_t oeInput = sumHash % 2;
-
     if (sizeInput < limit) {
         autoFill(inputHex, sizeInput, limit, hashBox);
     }
@@ -55,16 +48,8 @@ char* hash (const char input[], uint16_t rounds, uint16_t salting)  {
     }
 
     differentiator(hashBox, limit);
-
-    for (int i = 0; i < round(g_rounds/2); i++) {
-        goldenShuffler(hashBox, limit, g_rounds);
-        logicOpps(hashBox, oeInput , limit);
-        logMathOpps(hashBox, oeInput , limit);
-        eulerShuffler(hashBox, limit, g_rounds);
-    }
-
-    differentiator(hashBox, limit);
     weakIndexCorrector(hashBox, limit, inputHex, sizeInput);
+    differentiator(hashBox, limit);
 
     char* hashStr = malloc(limit * 2 + 1);
     if (!hashStr) return NULL;
