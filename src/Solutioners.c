@@ -139,3 +139,15 @@ void compactor256x(const size_t capacity, uint8_t *hashBoxH) {
     // Passing temp to hash
     memcpy(hashBoxH, tempBox, newHashLength);
 }
+
+void simple_shuffler(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize) {
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBoxH, capacity);
+
+    for (size_t i = 0; i < capacity; i++) {
+        size_t swapIdx = (i * 32123 * originalSize) % capacity;
+        tempBox[i] = tempBox[swapIdx];
+    }
+
+    memcpy(hashBoxH, tempBox, capacity);
+}

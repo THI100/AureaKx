@@ -7,5 +7,6 @@ void compactor (const uint8_t *hexBox, size_t length, size_t capacity, uint8_t *
 void differentiator(uint8_t *hashBox, size_t capacity);
 void weakIndexCorrector(uint8_t *hashBox, size_t capacity, uint8_t *inputOriginal, size_t sizeOriginal);
 void compactor256x(const size_t capacity, uint8_t *hashBoxH);
+void simple_shuffler(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize);
 
 #endif //SOLUTIONERS_H

@@ -1,6 +1,6 @@
 #ifndef AUREAKX_H
 #define AUREAKX_H
 
-char* hash (const char input[], uint16_t rounds, uint16_t salting);
+char* hash (const char input[], uint16_t rounds);
 
 #endif

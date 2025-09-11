@@ -38,7 +38,7 @@ int main(void) {
         unique_utf8_string(input, MAX_INPUT_LEN, i + 1); // Always unique
 
         // Run your hash function
-        char *h = hash(input, 100, 42); // Example rounds & salting
+        char *h = hash(input, 42); // Example rounds & salting
         if (!h) continue;
 
         // Save both the input and its hash
