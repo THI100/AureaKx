@@ -1,26 +1,26 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 1.3.1                                                                                      |
+| **Version**                     | 1.4.0                                                                                      |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                           |
 | **Use Case**                    | File Integrity                                                                             |
 | **Hash Size (bits)**            | 1024x                                                                                      |
 | **Output Format**               | Hex                                                                                        |
-| **Collision Resistance**        | ✅ High                                                                                    |
-| **Pre-image Resistance**        | ✅ Medium                                                                                  |
-| **Second Pre-image Resistance** | ✅ Low                                                                                     |
-| **Speed (ops/sec)**             | 1/0.000220                                                                                 |
+| **Collision Resistance**        | ✅ 0/200K tries                                                                                    |
+| **Pre-image Resistance**        | ✅ 0/10M tries                                                                                  |
+| **Second Pre-image Resistance** | ✅ 0/10M tries                                                                                     |
+| **Speed (ops/sec)**             | 4540 ops/sec                                                                                 |
 | **Memory Usage**                | 9.5 MB                                                                                     |
 | **Deterministic?**              | ✅ Yes                                                                                     |
 | **Salt Support**                | ✅ Yes                                                                                     |
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                      |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
-| **Known Attacks / Weaknesses**  | ALL                                                                                       |
-| **Security Notes**              | None yet                                                                                   |
-| **Used In Protocols / Apps**    | None                                                                                       |
+| **Known Attacks / Weaknesses**  | None                                                                                       |
+| **Security Notes**              | The usage of encrypting low size inputs isn't recommended.                                                                                   |
+| **Used In Protocols / Apps**    | Aurealis Blockchain                                                                                       |
 | **Open Source?**                | ✅ Yes                                                                                     |
 | **License**                     | MIT                                                                                        |
 | **Reference Implementation**    | Blockchain and crypto currencies                                                           |
