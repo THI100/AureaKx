@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                    |
-| **Version**                     | 1.2.2                                                                                      |
+| **Version**                     | 1.3.0                                                                                      |
 | **Author / Organization**       | THI100                                                                                     |
 | **Date Added**                  | 29/07/25                                                                                   |
 | **Category**                    | ✅ Cryptographic                                                                           |
@@ -18,7 +18,7 @@
 | **Keyed? (MAC/PRF)**            | ❌ No                                                                                      |
 | **Streaming Support**           | No                                                                                         |
 | **Hardware Acceleration**       | No                                                                                         |
-| **Known Attacks / Weaknesses**  | |ALL                                                                                       |
+| **Known Attacks / Weaknesses**  | ALL                                                                                       |
 | **Security Notes**              | None yet                                                                                   |
 | **Used In Protocols / Apps**    | None                                                                                       |
 | **Open Source?**                | ✅ Yes                                                                                     |
