@@ -17,11 +17,8 @@ char* hash (const char input[], uint16_t salting)  {
     memset(hashBox, 0, limit);
 
     const size_t sizeInput = strlen(input);
-    uint8_t inputHex[sizeInput + 1];
-    inputHex[sizeInput+1] = 0xFF;
+    uint8_t inputHex[sizeInput];
     converter(input, sizeInput, inputHex);
-    inputHex[sizeInput+1] = 0xFF;
-    collision_breaker(inputHex, sizeInput);
 
     if (salting < 0) {
         saltAdd(inputHex, sizeInput, salting);

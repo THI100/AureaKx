@@ -140,24 +140,6 @@ void compactor256x(const size_t capacity, uint8_t *hashBoxH) {
     memcpy(hashBoxH, tempBox, newHashLength);
 }
 
-void collision_breaker(uint8_t *hexBox, const size_t length) {
-    
-    if (hexBox[1] == ' " ' ) {
-
-        uint8_t t = hexBox[1];
-
-        if (length > 1 & length > 2) {
-
-            if (hexBox[2] == ' " ' ) {
-
-                uint8_t t1 = hexBox[2];
-                hexBox[3] = t1;
-                hexBox[2] = 0x26;
-            }
-        }
-    }
-}
-
 void simple_shuffler(uint8_t *hashBoxH, const size_t capacity) {
     uint8_t tempBox[capacity];
     memcpy(tempBox, hashBoxH, capacity);
