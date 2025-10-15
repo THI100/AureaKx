@@ -9,5 +9,6 @@ void weakIndexCorrector(uint8_t *hashBox, size_t capacity, uint8_t *inputOrigina
 void compactor256x(const size_t capacity, uint8_t *hashBoxH);
 void simple_shuffler(uint8_t *hashBoxH, const size_t capacity);
 void compactor768x(const size_t capacity, uint8_t *hashBoxH);
+void simple_shuffler_directionated(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize);
 
 #endif //SOLUTIONERS_H

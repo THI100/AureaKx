@@ -182,3 +182,77 @@ void compactor768x(const size_t capacity, uint8_t *hashBoxH) {
     // Passing temp to hash
     memcpy(hashBoxH, tempBox, newHashLength);
 }
+
+void simple_shuffler_directionated(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize) {
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBoxH, capacity);
+
+    size_t seed = originalSize * 32123u + capacity;
+    for (size_t i = capacity - 1; i > 0; i--) {
+        seed = seed * 1103515245u + 12345u; // LCG
+        size_t j = seed % (i + 1);
+
+        uint8_t tmp = tempBox[i];
+        tempBox[i] = tempBox[j];
+        tmp = logical_variable(tmp, (uint8_t)j);
+        tempBox[j] = tmp;
+    }
+
+    memcpy(hashBoxH, tempBox, capacity);
+}
+
+static inline uint8_t rotl8(uint8_t x, unsigned n) {
+    return (x << n) | (x >> (8 - n));
+}
+
+static inline uint8_t rotr8(uint8_t x, unsigned n) {
+    return (x >> n) | (x << (8 - n));
+}
+
+
+uint8_t logical_variable(uint8_t tmp, uint8_t j) {
+    uint8_t seed = (uint8_t)((j * 73u) ^ (tmp * 97u) ^ (j + 0xB5u));
+    uint8_t mix  = rotl8((uint8_t)(seed ^ 0xA3u), (seed & 7u));
+    uint8_t op   = (seed ^ mix ^ (tmp >> 3)) & 0x07u;  // op selector
+
+    // S-box style
+    static const uint8_t sbox[16] = {
+        0x6, 0xB, 0x0, 0xD, 0x9, 0x3, 0xE, 0x5,
+        0xA, 0xC, 0x1, 0x7, 0x8, 0xF, 0x2, 0x4
+    };
+
+    // nonlinear opp based on op
+    switch (op) {
+        case 0:
+            tmp = rotl8(tmp ^ mix, tmp & 7u);
+            break;
+        case 1:
+            tmp = rotr8((uint8_t)(tmp + mix), (mix & 7u));
+            break;
+        case 2:
+            tmp = (uint8_t)((tmp ^ sbox[tmp & 0x0F]) + mix);
+            break;
+        case 3:
+            tmp = (uint8_t)((tmp & mix) ^ sbox[(mix >> 4) & 0x0F]);
+            break;
+        case 4:
+            tmp = (uint8_t)(~tmp ^ rotl8(mix, 3));
+            break;
+        case 5:
+            tmp = (uint8_t)(tmp + sbox[(tmp ^ mix) & 0x0F]);
+            tmp = rotl8(tmp, (seed & 3u));
+            break;
+        case 6:
+            tmp = (uint8_t)((tmp * 17u) ^ (mix + 41u));
+            break;
+        case 7:
+            tmp = (uint8_t)(rotr8(tmp, 2) ^ sbox[(mix ^ tmp) & 0x0F]);
+            break;
+    }
+
+    // Final nonlinear diffusion
+    tmp ^= rotl8(seed, 5) ^ (mix >> 2);
+    tmp = sbox[tmp & 0x0F] ^ rotl8(tmp, 3);
+
+    return tmp;
+}
