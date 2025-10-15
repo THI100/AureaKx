@@ -183,24 +183,6 @@ void compactor768x(const size_t capacity, uint8_t *hashBoxH) {
     memcpy(hashBoxH, tempBox, newHashLength);
 }
 
-void simple_shuffler_directionated(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize) {
-    uint8_t tempBox[capacity];
-    memcpy(tempBox, hashBoxH, capacity);
-
-    size_t seed = originalSize * 32123u + capacity;
-    for (size_t i = capacity - 1; i > 0; i--) {
-        seed = seed * 1103515245u + 12345u; // LCG
-        size_t j = seed % (i + 1);
-
-        uint8_t tmp = tempBox[i];
-        tempBox[i] = tempBox[j];
-        tmp = logical_variable(tmp, (uint8_t)j);
-        tempBox[j] = tmp;
-    }
-
-    memcpy(hashBoxH, tempBox, capacity);
-}
-
 static inline uint8_t rotl8(uint8_t x, unsigned n) {
     return (x << n) | (x >> (8 - n));
 }
@@ -255,4 +237,22 @@ uint8_t logical_variable(uint8_t tmp, uint8_t j) {
     tmp = sbox[tmp & 0x0F] ^ rotl8(tmp, 3);
 
     return tmp;
+}
+
+void simple_shuffler_directionated(uint8_t *hashBoxH, const size_t capacity, const size_t originalSize) {
+    uint8_t tempBox[capacity];
+    memcpy(tempBox, hashBoxH, capacity);
+
+    size_t seed = originalSize * 32123u + capacity;
+    for (size_t i = capacity - 1; i > 0; i--) {
+        seed = seed * 1103515245u + 12345u; // LCG
+        size_t j = seed % (i + 1);
+
+        uint8_t tmp = tempBox[i];
+        tempBox[i] = tempBox[j];
+        tmp = logical_variable(tmp, (uint8_t)j);
+        tempBox[j] = tmp;
+    }
+
+    memcpy(hashBoxH, tempBox, capacity);
 }
