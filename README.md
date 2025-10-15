@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                 |
 |---------------------------------|-----------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                 |
-| **Version**                     | 1.5.5                                                                                   |
+| **Version**                     | 1.6.0                                                                                |
 | **Author / Organization**       | THI100                                                                                  |
 | **Date Added**                  | 29/07/25                                                                                |
 | **Category**                    | Cryptographic                                                                           |
@@ -11,15 +11,15 @@
 | **Collision Resistance**        | 0/2M tries                                                                              |
 | **Pre-image Resistance**        | No test                                                                                 |
 | **Second Pre-image Resistance** | 0/10M tries                                                                             |
-| **Speed (ops/sec)**             | 4540 ops/sec                                                                            |
-| **Memory Usage**                | 9.5 MB                                                                                  |
+| **Speed (ops/sec)**             | 43478 ops/sec                                                                            |
+| **Memory Usage**                | 9.8 MB                                                                                  |
 | **Deterministic?**              | Yes                                                                                     |
 | **Salt Support**                | Yes                                                                                     |
 | **Keyed? (MAC/PRF)**            | No                                                                                      |
 | **Streaming Support**           | No                                                                                      |
 | **Hardware Acceleration**       | No                                                                                      |
 | **Known Attacks / Weaknesses**  | None                                                                                    |
-| **Security Notes**               |                                                                                        |
+| **Security Notes**              |                                                                                        |
 | **Used In Protocols / Apps**    | Aurealis Blockchain                                                                     |
 | **Open Source?**                | Yes                                                                                     |
 | **License**                     | MIT                                                                                     |
