@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <sys/resource.h>
+#include <stddef.h>
 
 #include "../include/AureaKx.h"
 
@@ -14,11 +15,33 @@
 
 // Generate a unique deterministic string from an integer counter
 void unique_utf8_string(char *buf, size_t max_len, unsigned long long counter) {
-    // Convert counter to base-95 (printable ASCII range 32–126)
+    // Generate a per-process pseudo-random seed (time + address entropy)
+    static unsigned long long seed = 0;
+    if (seed == 0) {
+        unsigned long long t = (unsigned long long)time(NULL);
+        uintptr_t addr = (uintptr_t)&seed;
+        seed = t ^ (addr * 0x9E3779B97F4A7C15ULL);
+        // Mix further for good diffusion
+        seed ^= (seed >> 30);
+        seed *= 0xBF58476D1CE4E5B9ULL;
+        seed ^= (seed >> 27);
+        seed *= 0x94D049BB133111EBULL;
+        seed ^= (seed >> 31);
+    }
+
+    // Combine counter with internal seed
+    unsigned long long x = counter ^ (seed + (counter << 17) | (counter >> 13));
+
+    // Mix bits (SplitMix64-like diffusion)
+    x = (x ^ (x >> 30)) * 0xBF58476D1CE4E5B9ULL;
+    x = (x ^ (x >> 27)) * 0x94D049BB133111EBULL;
+    x ^= (x >> 31);
+
+    // Convert to base-95 (printable ASCII range 32–126)
     size_t i = 0;
-    while (counter > 0 && i < max_len - 1) {
-        buf[i++] = (char)(32 + (counter % 95));
-        counter /= 95;
+    while (x > 0 && i < max_len - 1) {
+        buf[i++] = (char)(32 + (x % 95));
+        x /= 95;
     }
     buf[i] = '\0';
 }
