@@ -1,7 +1,7 @@
 | **Field**                       | **Description / Value**                                                                 |
 |---------------------------------|-----------------------------------------------------------------------------------------|
 | **Hashing Method Name**         | AureaKx                                                                                 |
-| **Version**                     | 1.5.1                                                                                   |
+| **Version**                     | 1.5.2                                                                                   |
 | **Author / Organization**       | THI100                                                                                  |
 | **Date Added**                  | 29/07/25                                                                                |
 | **Category**                    | Cryptographic                                                                           |
