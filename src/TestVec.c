@@ -9,19 +9,17 @@
 #include "../include/AureaKx.h"
 
 // --- Config ---
-#define NUM_TESTS_PI 10000000   // limit of C programming language, 10 millions of attempts
-#define NUM_TESTS_COL 200000    // limit of performance, 200 Thousands of attempts
-#define MAX_INPUT_LEN 128  // Max length of generated input strings
+#define NUM_TESTS_PI 10000000
+#define NUM_TESTS_COL 2000000
+#define MAX_INPUT_LEN 128
+#define HASH_LEN 128   // <-- adjust to your actual hash length
 
-// Generate a unique deterministic string from an integer counter
 void unique_utf8_string(char *buf, size_t max_len, unsigned long long counter) {
-    // Generate a per-process pseudo-random seed (time + address entropy)
     static unsigned long long seed = 0;
     if (seed == 0) {
         unsigned long long t = (unsigned long long)time(NULL);
         uintptr_t addr = (uintptr_t)&seed;
         seed = t ^ (addr * 0x9E3779B97F4A7C15ULL);
-        // Mix further for good diffusion
         seed ^= (seed >> 30);
         seed *= 0xBF58476D1CE4E5B9ULL;
         seed ^= (seed >> 27);
@@ -29,15 +27,11 @@ void unique_utf8_string(char *buf, size_t max_len, unsigned long long counter) {
         seed ^= (seed >> 31);
     }
 
-    // Combine counter with internal seed
     unsigned long long x = counter ^ (seed + (counter << 17) | (counter >> 13));
-
-    // Mix bits (SplitMix64-like diffusion)
     x = (x ^ (x >> 30)) * 0xBF58476D1CE4E5B9ULL;
     x = (x ^ (x >> 27)) * 0x94D049BB133111EBULL;
     x ^= (x >> 31);
 
-    // Convert to base-95 (printable ASCII range 32–126)
     size_t i = 0;
     while (x > 0 && i < max_len - 1) {
         buf[i++] = (char)(32 + (x % 95));
@@ -52,122 +46,115 @@ void print_memory_usage() {
     printf("Memory used: %ld kilobytes\n", usage.ru_maxrss);
 }
 
-int main(void) {
+// --- Simple hash table for collision detection ---
+typedef struct {
+    uint64_t hash_code;
+    char hash_str[HASH_LEN + 1];
+    char input[MAX_INPUT_LEN];
+    int used;
+} HashEntry;
 
+#define TABLE_SIZE (NUM_TESTS_COL * 2 + 1)
+
+static inline uint64_t fast64(const char *s) {
+    uint64_t h = 1469598103934665603ULL;
+    for (; *s; ++s)
+        h = (h ^ (unsigned char)*s) * 1099511628211ULL;
+    return h;
+}
+
+int main(void) {
     clock_t start, end;
     double cpu_time_used;
-
     int nc = 0;
-    printf("select a option of test, 1 for collision and 2 for second pre-image. \n");
+
+    printf("Select option: 1 = collision, 2 = pre-image.\n");
     scanf("%d", &nc);
 
     if (nc == 1) {
         start = clock();
 
-        srand((unsigned)time(NULL));
-
-        char **hashes = malloc(NUM_TESTS_COL * sizeof(char*));
-        char **inputs = malloc(NUM_TESTS_COL * sizeof(char*)); // keep original inputs too
-        if (!hashes || !inputs) {
+        size_t collisions = 0;
+        HashEntry *table = calloc(TABLE_SIZE, sizeof(HashEntry));
+        if (!table) {
             fprintf(stderr, "Memory allocation failed\n");
             return 1;
         }
 
-        size_t collisions = 0;
-
         for (size_t i = 0; i < NUM_TESTS_COL; i++) {
             char input[MAX_INPUT_LEN];
-            unique_utf8_string(input, MAX_INPUT_LEN, i + 1); // Always unique
-
-            // Run your hash function
-            char *h = hash(input, 42); // Example rounds & salting
+            unique_utf8_string(input, MAX_INPUT_LEN, i + 1);
+            char *h = hash(input, 42);
             if (!h) continue;
 
-            // Save both the input and its hash
-            inputs[i] = strdup(input);
-            hashes[i] = strdup(h);
+            uint64_t hc = fast64(h);
+            size_t pos = hc % TABLE_SIZE;
 
-            // Compare with all previous hashes
-            for (size_t j = 0; j < i; j++) {
-                if (strcmp(hashes[i], hashes[j]) == 0) {
+            // Linear probing
+            while (table[pos].used) {
+                if (memcmp(table[pos].hash_str, h, HASH_LEN) == 0) {
                     collisions++;
-                    printf("\n[COLLISION #%zu]\n", collisions);
-                    printf("  Input A: %s\n", inputs[j]);
-                    printf("  Input B: %s\n", inputs[i]);
-                    printf("  Hash   : %s\n", hashes[i]);
-                    break;  // count once per new string
+                    printf("\n[COLLISION #%zu]\nInput A: %s\nInput B: %s\nHash   : %s\n",
+                           collisions, table[pos].input, input, h);
+                    break;
                 }
+                pos = (pos + 1) % TABLE_SIZE;
+            }
+
+            // Insert if empty
+            if (!table[pos].used) {
+                table[pos].used = 1;
+                table[pos].hash_code = hc;
+                strncpy(table[pos].hash_str, h, HASH_LEN);
+                strncpy(table[pos].input, input, MAX_INPUT_LEN);
             }
         }
 
-        printf("\nTotal tests: %d\n", NUM_TESTS_COL);
-        printf("Collisions found: %zu\n", collisions);
-
+        printf("\nTotal tests: %d\nCollisions found: %zu\n", NUM_TESTS_COL, collisions);
         print_memory_usage();
 
-        // Cleanup
-        for (size_t i = 0; i < NUM_TESTS_COL; i++) {
-            free(hashes[i]);
-            free(inputs[i]);
-        }
-        free(hashes);
-        free(inputs);
-
+        free(table);
         end = clock();
-
-        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
         printf("Execution time: %.6f seconds\n", cpu_time_used);
     }
 
     else if (nc == 2) {
         start = clock();
-
-        srand((unsigned)time(NULL));
-
-        // Pick a known target
         const char *targetInput = "SecretMessage123";
-        char *targetHash = hash(targetInput, 42); // Example parameter
+        char *targetHash = hash(targetInput, 42);
         if (!targetHash) {
-            fprintf(stderr, "Target hash computation failed\n");
+            fprintf(stderr, "Target hash failed.\n");
             return 1;
         }
 
-        printf("Target Input: %s\n", targetInput);
-        printf("Target Hash : %s\n\n", targetHash);
+        printf("Target Input: %s\nTarget Hash : %s\n", targetInput, targetHash);
 
-        // Attempt to find a pre-image
         size_t found = 0;
         for (size_t i = 1; i <= NUM_TESTS_PI; i++) {
             char candidate[MAX_INPUT_LEN];
             unique_utf8_string(candidate, MAX_INPUT_LEN, i);
-
             char *h = hash(candidate, 42);
             if (!h) continue;
 
-            if (strcmp(h, targetHash) == 0 && strcmp(candidate, targetInput) != 0) {
-                printf("[PRE-IMAGE FOUND]\n");
-                printf("  Candidate Input: %s\n", candidate);
-                printf("  Hash           : %s\n", h);
+            if (memcmp(h, targetHash, HASH_LEN) == 0 && strcmp(candidate, targetInput) != 0) {
+                printf("[PRE-IMAGE FOUND]\nCandidate: %s\nHash: %s\n", candidate, h);
                 found = 1;
                 break;
             }
         }
 
         print_memory_usage();
-
-        if (!found) {
+        if (!found)
             printf("No pre-image found after %d attempts.\n", NUM_TESTS_PI);
-        }
-        
-        end = clock();
 
-        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        end = clock();
+        cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
         printf("Execution time: %.6f seconds\n", cpu_time_used);
     }
 
-
     else {
-        printf("Error: invalid input.");
+        printf("Invalid option.\n");
     }
 
     return 0;
